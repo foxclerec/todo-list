@@ -1,9 +1,7 @@
 var input = document.querySelector('.input');
 var btn = document.querySelector('.btn');
 var ul = document.querySelector('.todo-list');
-var li = document.querySelector('li');
-
-
+var li = document.querySelectorAll('li');
 
 function inputLength() {
 	return input.value.length;
@@ -11,12 +9,16 @@ function inputLength() {
 
 function createListElement() {
 	var li = document.createElement('li');
-	var settings = document.createElement('span');
+	
 	li.appendChild(document.createTextNode(input.value));
 	ul.appendChild(li);
-	li.appendChild(settings);
+
 	input.value = '';
+
+	changeClass(li);
+	removeItem(li)
 }
+
 
 function addListAfterClick() {
 	if(inputLength() > 0) {
@@ -30,16 +32,25 @@ function addListAfterKeydown(e) {
 	}
 }
 
-// Done
-function underlineItem(event){
-	li.classList.toggle("done");
+// Change class
+function changeClass(item) {
+	item.addEventListener('click', function(){
+        item.classList.toggle("done");
+    });
 }
 
-// Delete
-function removeItem(event){
-	li.remove();
+// Remove
+function removeItem(item){
+	var div = document.createElement('div');
+	var del = document.querySelectorAll('.delete');
+	div.classList.add('delete');
+	item.appendChild(div);
+
+	div.addEventListener('click', function() {
+		item.classList.add('delete-animation');
+		item.remove();
+	});
 }
 
 btn.addEventListener('click', addListAfterClick);
 input.addEventListener('keydown', addListAfterKeydown);
-li.addEventListener('click', underlineItem);
